@@ -291,7 +291,7 @@ static void embed() {
         json_decref(parse);
         if (esize != psize)
             fail("json_dumpb(JSON_EMBED) returned an invalid size");
-        if (strncmp(plain + 1, embed, esize) != 0)
+        if (esize > 0 && strncmp(plain + 1, embed, esize) != 0)
             fail("json_dumps(JSON_EMBED) returned an invalid value");
         free(embed);
     }
