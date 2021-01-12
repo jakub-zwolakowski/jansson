@@ -207,7 +207,11 @@ static void run_tests() {
 
     /* NULL string pointer */
     j = json_string("foobie");
+#ifdef __TRUSTINSOFT_ANALYZER__
+    if (!json_unpack_ex(j, &error, 0, "s", (const char **) NULL))
+#else
     if (!json_unpack_ex(j, &error, 0, "s", NULL))
+#endif
         fail("json_unpack failed to catch null string pointer");
     check_error(json_error_null_value, "NULL string argument", "<args>", 1, 1, 1);
     json_decref(j);
