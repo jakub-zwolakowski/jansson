@@ -143,13 +143,24 @@ def make_common_config():
         list(map(lambda file: path.join("..", file), c_files_src))
     )
     # Filesystem.
+    suites = list(
+        list(glob.iglob(path.join("test", "suites", "valid", "**/input"), recursive=True))
+        +
+        list(glob.iglob(path.join("test", "suites", "valid", "**/output"), recursive=True))
+    )
     filesystem_files = (
         [
             {
                 "name": path.join("/", "dev", "urandom"),
                 "from": urandom_filename,
             }
-        ]
+        ] +
+        list(map(lambda file:
+            {
+                "name": file,
+                "from": path.join("..", file),
+            },
+            suites))
     )
     # Compilation options.
     compilation_cmd = (
