@@ -137,16 +137,17 @@ for file in files_to_copy:
 
 def make_common_config():
     # C files.
-    c_files_src = sorted(glob.iglob(path.join("src", "*.c"), recursive=False))
+    c_files_src = sorted(glob.glob(path.join("src", "*.c")))
     c_files = (
         [ "stub.c" ] +
         list(map(lambda file: path.join("..", file), c_files_src))
     )
     # Filesystem.
     suites = list(
-        list(glob.iglob(path.join("test", "suites", "valid", "**/input"), recursive=True))
-        +
-        list(glob.iglob(path.join("test", "suites", "valid", "**/output"), recursive=True))
+        glob.glob(path.join("test", "suites", "*", "*", "env")) +
+        glob.glob(path.join("test", "suites", "*", "*", "input")) +
+        glob.glob(path.join("test", "suites", "*", "*", "output")) +
+        glob.glob(path.join("test", "suites", "*", "*", "error"))
     )
     filesystem_files = (
         [
