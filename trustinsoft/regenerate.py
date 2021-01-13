@@ -228,6 +228,13 @@ tests = sorted(glob.iglob(
     path.join("test", "suites", "api", "test_*.c"),
     recursive=False))
 
+other_tests = (
+      glob.glob(path.join("test", "suites", "valid", "*"))
+    + glob.glob(path.join("test", "suites", "invalid", "*"))
+)
+
+# other_tests = [ "test/suites/valid/empty-array" ]
+
 def make_test(test_path, machdep):
     tis_test = {
         "name": "%s, %s" % (test_path, machdep["pretty_name"]),
@@ -237,12 +244,29 @@ def make_test(test_path, machdep):
     }
     return tis_test
 
+def make_other_test(test_path, machdep):
+    tis_test = {
+        "name": "%s, %s" % (test_path, machdep["pretty_name"]),
+        "include": common_config_path,
+        "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
+        "files": [ "test/bin/json_process.c" ],
+        "val-args": (" %s" % (test_path)),
+    }
+    return tis_test
+
 def make_tis_config():
     tis_tests = product(tests, machdeps)
-    return list(map(
-        lambda t: make_test(t[0], t[1]),
-        tis_tests
-    ))
+    tis_other_tests = product(other_tests, machdeps)
+    return (
+        list(map(
+            lambda t: make_other_test(t[0], t[1]),
+            tis_other_tests
+        )) +
+        list(map(
+            lambda t: make_test(t[0], t[1]),
+            tis_tests
+        ))
+    )
 
 tis_config = make_tis_config()
 with open("tis.config", "w") as file:
