@@ -143,11 +143,11 @@ def make_common_config():
         list(map(lambda file: path.join("..", file), c_files_src))
     )
     # Filesystem.
-    suites = list(
-        glob.glob(path.join("test", "suites", "*", "*", "env")) +
-        glob.glob(path.join("test", "suites", "*", "*", "input")) +
-        glob.glob(path.join("test", "suites", "*", "*", "output")) +
-        glob.glob(path.join("test", "suites", "*", "*", "error"))
+    suites_files = list(
+        glob.glob(path.join("test", "suites", "valid", "*", "*")) +
+        glob.glob(path.join("test", "suites", "invalid", "*", "*")) +
+        glob.glob(path.join("test", "suites", "invalid-unicode", "*", "*")) +
+        glob.glob(path.join("test", "suites", "encoding-flags", "*", "*"))
     )
     filesystem_files = (
         [
@@ -161,7 +161,7 @@ def make_common_config():
                 "name": file,
                 "from": path.join("..", file),
             },
-            suites))
+            suites_files))
     )
     # Compilation options.
     compilation_cmd = (
