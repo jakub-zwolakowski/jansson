@@ -177,6 +177,7 @@ def make_common_config():
                 "HAVE_STDINT_H",
                 "HAVE_UNISTD_H",
                 "NO_MASKING_TRICK",
+                "__TIS_MKFS_INO_MAX=400",
             ],
             "-U": []
         }
