@@ -229,7 +229,11 @@ tests = sorted(glob.iglob(
     recursive=False))
 
 other_tests = (
-      glob.glob(path.join("test", "suites", "valid", "*"))
+    #   glob.glob(path.join("test", "suites", "valid", "*"))
+    # + glob.glob(path.join("test", "suites", "invalid", "*"))
+      glob.glob(path.join("test", "suites", "invalid-unicode", "*"))
+    + glob.glob(path.join("test", "suites", "encoding-flags", "*"))
+    + glob.glob(path.join("test", "suites", "valid", "*"))
     + glob.glob(path.join("test", "suites", "invalid", "*"))
 )
 
