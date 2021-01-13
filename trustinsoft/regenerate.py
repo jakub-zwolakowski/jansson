@@ -224,17 +224,13 @@ for machdep_config in machdep_configs:
 # --------------------------- GENERATE tis.config --------------------------- #
 # --------------------------------------------------------------------------- #
 
-tests = sorted(glob.iglob(
-    path.join("test", "suites", "api", "test_*.c"),
-    recursive=False))
+tests = sorted(glob.glob(path.join("test", "suites", "api", "test_*.c")))
 
 other_tests = (
-    #   glob.glob(path.join("test", "suites", "valid", "*"))
-    # + glob.glob(path.join("test", "suites", "invalid", "*"))
-      glob.glob(path.join("test", "suites", "invalid-unicode", "*"))
-    + glob.glob(path.join("test", "suites", "encoding-flags", "*"))
-    + glob.glob(path.join("test", "suites", "valid", "*"))
+      glob.glob(path.join("test", "suites", "valid", "*"))
     + glob.glob(path.join("test", "suites", "invalid", "*"))
+    + glob.glob(path.join("test", "suites", "invalid-unicode", "*"))
+    + glob.glob(path.join("test", "suites", "encoding-flags", "*"))
 )
 
 # other_tests = [ "test/suites/valid/empty-array" ]
@@ -263,12 +259,13 @@ def make_tis_config():
     tis_other_tests = product(other_tests, machdeps)
     return (
         list(map(
-            lambda t: make_other_test(t[0], t[1]),
-            tis_other_tests
-        )) +
-        list(map(
             lambda t: make_test(t[0], t[1]),
             tis_tests
+        ))
+        +
+        list(map(
+            lambda t: make_other_test(t[0], t[1]),
+            tis_other_tests
         ))
     )
 
