@@ -226,14 +226,13 @@ for machdep_config in machdep_configs:
 
 tests = sorted(glob.glob(path.join("test", "suites", "api", "test_*.c")))
 
-other_tests = (
-      glob.glob(path.join("test", "suites", "valid", "*"))
-    + glob.glob(path.join("test", "suites", "invalid", "*"))
-    + glob.glob(path.join("test", "suites", "invalid-unicode", "*"))
-    + glob.glob(path.join("test", "suites", "encoding-flags", "*"))
-)
-
-# other_tests = [ "test/suites/valid/empty-array" ]
+other_tests = list(
+    map(path.normpath,
+          glob.glob(path.join("test", "suites", "valid", "*/"))
+        + glob.glob(path.join("test", "suites", "invalid", "*/"))
+        + glob.glob(path.join("test", "suites", "invalid-unicode", "*/"))
+        + glob.glob(path.join("test", "suites", "encoding-flags", "*/"))
+))
 
 def make_test(test_path, machdep):
     tis_test = {
