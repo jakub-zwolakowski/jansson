@@ -49,74 +49,28 @@ machdeps = [
         "machdep": "gcc_x86_32",
         "pretty_name": "little endian 32-bit (x86)",
         "fields": {
-            "address-alignment": 32,
-            # "compilation_cmd":
-            #     tis.string_of_options(
-            #         {
-            #             "-D":
-            #                 [
-            #                     "__LITTLE_ENDIAN",
-            #                     "__BYTE_ORDER=__LITTLE_ENDIAN",
-            #                 ],
-            #             "-U": [],
-            #             "-I": [],
-            #         }
-            #     ),
+            "address-alignment": 32
         }
     },
     {
         "machdep": "gcc_x86_64",
         "pretty_name": "little endian 64-bit (x86)",
         "fields": {
-            "address-alignment": 64,
-            # "compilation_cmd":
-            #     tis.string_of_options(
-            #         {
-            #             "-D":
-            #                 [
-            #                     "__LITTLE_ENDIAN",
-            #                     "__BYTE_ORDER=__LITTLE_ENDIAN",
-            #                 ],
-            #             "-I": [],
-            #         }
-            #     ),
+            "address-alignment": 64
         }
     },
     {
         "machdep": "gcc_ppc_32",
         "pretty_name": "big endian 32-bit (PPC32)",
         "fields": {
-            "address-alignment": 32,
-            # "compilation_cmd":
-            #     tis.string_of_options(
-            #         {
-            #             "-D":
-            #                 [
-            #                     "__BIG_ENDIAN",
-            #                     "__BYTE_ORDER=__BIG_ENDIAN",
-            #                 ],
-            #              "-U": [],
-            #              "-I": [],
-            #         }
-            #     ),
+            "address-alignment": 32
         },
     },
     {
         "machdep": "gcc_ppc_64",
         "pretty_name": "big endian 64-bit (PPC64)",
         "fields": {
-            "address-alignment": 64,
-            # "compilation_cmd":
-            #     tis.string_of_options(
-            #         {
-            #             "-D":
-            #                 [
-            #                     "__BIG_ENDIAN",
-            #                     "__BYTE_ORDER=__BIG_ENDIAN",
-            #                 ],
-            #             "-I": [],
-            #         }
-            #     ),
+            "address-alignment": 64
         },
     },
 ]
@@ -190,6 +144,7 @@ def make_common_config():
             "compilation_cmd": tis.string_of_options(compilation_cmd),
             "val-clone-on-recursive-calls": True,
             "val-warn-harmless-function-pointers": False,
+            "val-warn-va-arg-type-mismatch": False,
         }
     )
     # Done.
