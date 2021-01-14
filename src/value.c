@@ -51,10 +51,32 @@ static JSON_INLINE void json_init(json_t *json, json_type type) {
     json->refcount = 1;
 }
 
+#define TIS_MAX_JSON_ADDRESSES 1024
+json_t *json_t_addresses[TIS_MAX_JSON_ADDRESSES];
+
+unsigned int tis_jsonp_loop_key(const json_t *json) {
+    if (json == NULL)
+      return 0;
+
+    unsigned int i = 0;
+    for (i = 0; i < TIS_MAX_JSON_ADDRESSES; i++) {
+        json_t *addr = json_t_addresses[i];
+        unsigned int id = i + 1;
+        if (addr == json)
+            return id;
+        if (addr == NULL) {
+            json_t_addresses[i] = json;
+            return id;
+        }
+    }
+    exit (42);
+}
+
 int jsonp_loop_check(hashtable_t *parents, const json_t *json, char *key, size_t key_size,
                      size_t *key_len_out) {
 #ifdef __TRUSTINSOFT_ANALYZER__
-    size_t key_len = snprintf(key, key_size, "%08X", json->tis_unique_id);
+    // size_t key_len = snprintf(key, key_size, "%08X", json->tis_unique_id);
+    size_t key_len = snprintf(key, key_size, "%08X", tis_jsonp_loop_key(json));
 #else
     size_t key_len = snprintf(key, key_size, "%p", json);
 #endif
