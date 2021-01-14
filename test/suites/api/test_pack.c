@@ -236,7 +236,7 @@ static void run_tests() {
     json_decref(value);
 
     /* non-incref'd nullable object (NULL case) */
-    value = json_pack("o?", (json_t *) NULL);
+    value = json_pack("o?", NULL);
     if (!json_is_null(value))
         fail("json_pack nullable object (NULL case) failed");
     if (value->refcount != (size_t)-1)
@@ -263,7 +263,7 @@ static void run_tests() {
     json_decref(value);
 
     /* incref'd nullable object (NULL case) */
-    value = json_pack("O?", (json_t *) NULL);
+    value = json_pack("O?", NULL);
     if (!json_is_null(value))
         fail("json_pack incref'd nullable object (NULL case) failed");
     if (value->refcount != (size_t)-1)
@@ -290,7 +290,7 @@ static void run_tests() {
     json_decref(value);
 
     /* object with optional members */
-    value = json_pack("{s:s,s:o,s:O}", "a", (const char *) NULL, "b", (json_t *) NULL, "c", (json_t *) NULL);
+    value = json_pack("{s:s,s:o,s:O}", "a", NULL, "b", NULL, "c", NULL);
     if (value)
         fail("json_pack object optional incorrectly succeeded");
 
@@ -303,7 +303,7 @@ static void run_tests() {
     check_error(json_error_invalid_format, "Expected format 's', got '*'", "<format>", 1,
                 5, 5);
 
-    value = json_pack("{s:s*,s:o*,s:O*}", "a", (const char *) NULL, "b", (json_t *) NULL, "c", (json_t *) NULL);
+    value = json_pack("{s:s*,s:o*,s:O*}", "a", NULL, "b", NULL, "c", NULL);
     if (!json_is_object(value) || json_object_size(value) != 0)
         fail("json_pack object optional failed");
     json_decref(value);
@@ -336,7 +336,7 @@ static void run_tests() {
     json_decref(value);
 
     /* simple array with optional members */
-    value = json_pack("[s,o,O]", (const char *) NULL, (json_t *) NULL, (json_t *) NULL);
+    value = json_pack("[s,o,O]", NULL, NULL, NULL);
     if (value)
         fail("json_pack array optional incorrectly succeeded");
 
@@ -348,7 +348,7 @@ static void run_tests() {
     value = json_pack("[**]", NULL);
     if (value)
         fail("json_pack array optional invalid incorrectly succeeded");
-    value = json_pack("[s*,o*,O*]", (const char *) NULL, (json_t *) NULL, (json_t *) NULL);
+    value = json_pack("[s*,o*,O*]", NULL, NULL, NULL);
     if (!json_is_array(value) || json_array_size(value) != 0)
         fail("json_pack array optional failed");
     json_decref(value);
@@ -519,15 +519,15 @@ static void run_tests() {
         fail("json_pack failed to catch invalid UTF-8 in an object key");
     check_error(json_error_invalid_utf8, "Invalid UTF-8 object key", "<args>", 1, 3, 3);
 
-    if (json_pack_ex(&error, 0, "{s:o}", "foo", (json_t *) NULL))
+    if (json_pack_ex(&error, 0, "{s:o}", "foo", NULL))
         fail("json_pack failed to catch nullable object");
     check_error(json_error_null_value, "NULL object", "<args>", 1, 4, 4);
 
-    if (json_pack_ex(&error, 0, "{s:O}", "foo", (json_t *) NULL))
+    if (json_pack_ex(&error, 0, "{s:O}", "foo", NULL))
         fail("json_pack failed to catch nullable incref object");
     check_error(json_error_null_value, "NULL object", "<args>", 1, 4, 4);
 
-    if (json_pack_ex(&error, 0, "{s+:o}", "foo", "bar", (json_t *) NULL))
+    if (json_pack_ex(&error, 0, "{s+:o}", "foo", "bar", NULL))
         fail("json_pack failed to catch non-nullable object value");
     check_error(json_error_null_value, "NULL object", "<args>", 1, 5, 5);
 
