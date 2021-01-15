@@ -145,6 +145,7 @@ def make_common_config():
             "val-clone-on-recursive-calls": True,
             "val-warn-harmless-function-pointers": False,
             "val-warn-va-arg-type-mismatch": False,
+            "val-printf-singleton-pointers": True,
         }
     )
     # Done.
