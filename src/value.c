@@ -75,9 +75,9 @@ static JSON_INLINE void json_init(json_t *json, json_type type) {
 int jsonp_loop_check(hashtable_t *parents, const json_t *json, char *key, size_t key_size,
                      size_t *key_len_out) {
 #ifdef __TRUSTINSOFT_ANALYZER__
-    // size_t key_len = snprintf(key, key_size, "%08X", json->tis_unique_id);
+    size_t key_len = snprintf(key, key_size, "%08X", json->tis_unique_id);
     // size_t key_len = snprintf(key, key_size, "%08X", tis_jsonp_loop_key(json));
-    size_t key_len = snprintf(key, key_size, "%p", (void *) json);
+    // size_t key_len = snprintf(key, key_size, "%p", (void *) json);
 #else
     size_t key_len = snprintf(key, key_size, "%p", json);
 #endif
