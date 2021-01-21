@@ -89,8 +89,13 @@ char *jsonp_strdup(const char *str) JANSSON_ATTRS((warn_unused_result));
 char *jsonp_strndup(const char *str, size_t len) JANSSON_ATTRS((warn_unused_result));
 
 /* Circular reference check*/
+#ifdef __TRUSTINSOFT_ANALYZER__
+/* Size and shape of '%p' is implementation-defined. */
+#define LOOP_KEY_LEN 128
+#else
 /* Space for "0x", double the sizeof a pointer for the hex and a terminator. */
 #define LOOP_KEY_LEN (2 + (sizeof(json_t *) * 2) + 1)
+#endif
 int jsonp_loop_check(hashtable_t *parents, const json_t *json, char *key, size_t key_size,
                      size_t *key_len_out);
 
