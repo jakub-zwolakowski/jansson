@@ -59,9 +59,6 @@ typedef enum {
 } json_type;
 
 typedef struct json_t {
-#ifdef __TRUSTINSOFT_ANALYZER__
-    unsigned int tis_unique_id;
-#endif
     json_type type;
     volatile size_t refcount;
 } json_t;
