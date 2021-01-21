@@ -25,7 +25,11 @@ struct hashtable_pair {
     size_t hash;
     json_t *value;
     size_t key_len;
+#ifdef __TRUSTINSOFT_BUGFIX__
+    char key[];
+#else
     char key[1];
+#endif
 };
 
 struct hashtable_bucket {
