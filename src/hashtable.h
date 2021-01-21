@@ -25,7 +25,7 @@ struct hashtable_pair {
     size_t hash;
     json_t *value;
     size_t key_len;
-    char key[1];
+    char key[];
 };
 
 struct hashtable_bucket {
