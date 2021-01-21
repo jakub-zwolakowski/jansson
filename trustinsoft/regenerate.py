@@ -40,7 +40,6 @@ files_to_copy = [
 ]
 
 # Random file length.
-urandom_filename = "urandom"
 urandom_length = 4096
 
 # Architectures.
@@ -92,56 +91,48 @@ for file in files_to_copy:
 def make_common_config():
     # C files.
     c_files_src = sorted(glob.glob(path.join("src", "*.c")))
-    c_files = (
-        [ "stub.c" ] +
-        list(map(lambda file: path.join("..", file), c_files_src))
-    )
+    c_files = [ path.join("trustinsoft", "stub.c") ] + c_files_src
     # Filesystem.
+    suites_dir = path.join("test", "suites")
     suites_files = list(
-        glob.glob(path.join("test", "suites", "valid", "*", "*")) +
-        glob.glob(path.join("test", "suites", "invalid", "*", "*")) +
-        glob.glob(path.join("test", "suites", "invalid-unicode", "*", "*")) +
-        glob.glob(path.join("test", "suites", "encoding-flags", "*", "*"))
+        glob.glob(path.join(suites_dir, "valid", "*", "*")) +
+        glob.glob(path.join(suites_dir, "invalid", "*", "*")) +
+        glob.glob(path.join(suites_dir, "invalid-unicode", "*", "*")) +
+        glob.glob(path.join(suites_dir, "encoding-flags", "*", "*"))
     )
     filesystem_files = (
         [
             {
                 "name": path.join("/", "dev", "urandom"),
-                "from": urandom_filename,
+                "from": path.join("trustinsoft", "urandom"),
             }
         ] +
         list(map(lambda file:
             {
                 "name": file,
-                "from": path.join("..", file),
+                "from": file,
             },
             suites_files))
     )
     # Compilation options.
-    compilation_cmd = (
-        {
-            "-I": [
-                "..",
-                path.join("..", "src"),
-                "include",
-                path.join("include", "src"),
-            ],
-            "-D": [
-                "volatile=",
-                "HAVE_STDINT_H",
-                "HAVE_UNISTD_H",
-                "NO_MASKING_TRICK",
-                "__TIS_MKFS_INO_MAX=400",
-            ],
-            "-U": []
-        }
-    )
+    cpp_extra_args = [
+        "-I.",
+        "-Isrc",
+        "-Itrustinsoft/include",
+        "-Itrustinsoft/include/src",
+        "-Dvolatile=",
+        "-DHAVE_STDINT_H",
+        "-DHAVE_UNISTD_H",
+        "-DNO_MASKING_TRICK",
+        "-D__TIS_MKFS_INO_MAX=400",
+    ]
     # Whole common.config JSON.
     config = (
         {
+            "prefix_path": "..",
             "files": c_files,
             "filesystem": { "files": filesystem_files },
-            "compilation_cmd": tis.string_of_options(compilation_cmd),
+            "cpp-extra-args": cpp_extra_args,
             "val-clone-on-recursive-calls": True,
             "val-warn-harmless-function-pointers": False,
             "val-warn-va-arg-type-mismatch": False,
@@ -253,6 +244,6 @@ for file in files_to_copy:
 
 print("6. Prepare other files.")
 if False: # TMP
-    with open(path.join("trustinsoft", urandom_filename), 'wb') as file:
-        print("   > Create the 'trustinsoft/%s' file." % urandom_filename)
+    with open(path.join("trustinsoft", "urandom"), 'wb') as file:
+        print("   > Create the 'trustinsoft/urandom' file.")
         file.write(os.urandom(urandom_length))
