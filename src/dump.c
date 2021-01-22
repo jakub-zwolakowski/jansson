@@ -263,9 +263,7 @@ static int do_dump(const json_t *json, size_t flags, int depth, hashtable_t *par
         case JSON_ARRAY: {
             size_t n;
             size_t i;
-            /* Space for "0x", double the sizeof a pointer for the hex and a
-             * terminator. */
-            char key[2 + (sizeof(json) * 2) + 1];
+            char key[LOOP_KEY_LEN];
             size_t key_len;
 
             /* detect circular references */
