@@ -195,8 +195,10 @@ def make_c_test(test_path, machdep):
     return tis_test
 
 def make_process_test(test_path, machdep):
+    test_name = path.basename(test_path)
+    suite_name = path.basename(path.dirname(test_path))
     tis_test = {
-        "name": "%s, %s" % (test_path, machdep["pretty_name"]),
+        "name": "%s : %s, %s" % (suite_name, test_name, machdep["pretty_name"]),
         "include": common_config_path,
         "include_": path.join("trustinsoft", "%s.config" % machdep["machdep"]),
         "files": [ "test/bin/json_process.c" ],
